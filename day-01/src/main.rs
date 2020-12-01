@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::fs;
 
 fn solve_part_one(entries: &[u32], target: u32) {
-    // (2020 - entry) -> entry
+    // (target - entry) -> entry
     let mut num_map = HashMap::new();
 
     for entry in entries {
