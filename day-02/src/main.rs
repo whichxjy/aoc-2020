@@ -10,6 +10,13 @@ struct Item {
     password: String,
 }
 
+impl Item {
+    fn is_valid(&self) -> bool {
+        let count = self.password.chars().filter(|c| c == &self.letter).count() as u32;
+        (count >= self.lowest) && (count <= self.highest)
+    }
+}
+
 fn parse_item_from_line(line: &str) -> Option<Item> {
     lazy_static! {
         static ref RE: Regex = Regex::new(
@@ -19,8 +26,7 @@ fn parse_item_from_line(line: &str) -> Option<Item> {
             (?P<highest>\d+)
             \s
             (?P<letter>[[:word:]])
-            :
-            \s
+            :\s
             (?P<password>[[:word:]]+)$
             "
         )
@@ -47,8 +53,15 @@ fn parse_item_from_line(line: &str) -> Option<Item> {
 
 fn main() {
     let file = BufReader::new(File::open("input.txt").unwrap());
+    let mut valid_count = 0;
 
     for line in file.lines() {
-        parse_item_from_line(&line.unwrap());
+        let item = parse_item_from_line(&line.unwrap()).unwrap();
+
+        if item.is_valid() {
+            valid_count += 1;
+        }
     }
+
+    println!("Answer: {}", valid_count);
 }
