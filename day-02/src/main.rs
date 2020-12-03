@@ -4,17 +4,10 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 
 struct Item {
-    lowest: u32,
-    highest: u32,
+    lowest: usize,
+    highest: usize,
     letter: char,
     password: String,
-}
-
-impl Item {
-    fn is_valid(&self) -> bool {
-        let count = self.password.chars().filter(|c| c == &self.letter).count() as u32;
-        (count >= self.lowest) && (count <= self.highest)
-    }
 }
 
 fn parse_item_from_line(line: &str) -> Option<Item> {
@@ -38,8 +31,8 @@ fn parse_item_from_line(line: &str) -> Option<Item> {
         None => return None,
     };
 
-    let lowest = cap["lowest"].parse::<u32>().unwrap();
-    let highest = cap["highest"].parse::<u32>().unwrap();
+    let lowest = cap["lowest"].parse::<usize>().unwrap();
+    let highest = cap["highest"].parse::<usize>().unwrap();
     let letter = cap["letter"].parse::<char>().unwrap();
     let password = cap["password"].to_owned();
 
@@ -52,8 +45,25 @@ fn parse_item_from_line(line: &str) -> Option<Item> {
 }
 
 fn solve_part_one(items: &[Item]) {
-    let valid_count = items.iter().filter(|item| item.is_valid()).count();
+    fn is_valid(item: &Item) -> bool {
+        let count = item.password.chars().filter(|c| c == &item.letter).count();
+        (count >= item.lowest) && (count <= item.highest)
+    }
+
+    let valid_count = items.iter().filter(|item| is_valid(item)).count();
     println!("[Part one]");
+    println!("Answer: {}", valid_count);
+}
+
+fn solve_part_two(items: &[Item]) {
+    fn is_valid(item: &Item) -> bool {
+        let lowest_letter = item.password.chars().nth(item.lowest - 1).unwrap();
+        let highest_letter = item.password.chars().nth(item.highest - 1).unwrap();
+        (lowest_letter == item.letter) ^ (highest_letter == item.letter)
+    }
+
+    let valid_count = items.iter().filter(|item| is_valid(item)).count();
+    println!("[Part two]");
     println!("Answer: {}", valid_count);
 }
 
@@ -66,4 +76,5 @@ fn main() {
         .collect::<Vec<Item>>();
 
     solve_part_one(&items);
+    solve_part_two(&items);
 }
