@@ -51,17 +51,19 @@ fn parse_item_from_line(line: &str) -> Option<Item> {
     })
 }
 
+fn solve_part_one(items: &[Item]) {
+    let valid_count = items.iter().filter(|item| item.is_valid()).count();
+    println!("[Part one]");
+    println!("Answer: {}", valid_count);
+}
+
 fn main() {
     let file = BufReader::new(File::open("input.txt").unwrap());
-    let mut valid_count = 0;
+    let lines = file.lines().map(|l| l.unwrap()).collect::<Vec<String>>();
+    let items = lines
+        .into_iter()
+        .map(|l| parse_item_from_line(&l).unwrap())
+        .collect::<Vec<Item>>();
 
-    for line in file.lines() {
-        let item = parse_item_from_line(&line.unwrap()).unwrap();
-
-        if item.is_valid() {
-            valid_count += 1;
-        }
-    }
-
-    println!("Answer: {}", valid_count);
+    solve_part_one(&items);
 }
