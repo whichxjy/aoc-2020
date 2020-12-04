@@ -4,6 +4,8 @@ use regex::Regex;
 use std::collections::HashMap;
 use std::fs;
 
+type Passport = Vec<(String, String)>;
+
 lazy_static! {
     static ref KV_RE: Regex = Regex::new(
         r"(?x)
@@ -15,18 +17,17 @@ lazy_static! {
     .unwrap();
 }
 
-fn parse_kv(passport: &str) -> (String, String) {
-    let cap = KV_RE.captures(passport).expect("Fail to parse kv");
+fn parse_kv(text: &str) -> (String, String) {
+    let cap = KV_RE.captures(text).expect("Fail to parse kv");
     let key = cap["key"].to_owned();
     let val = cap["val"].to_owned();
     (key, val)
 }
 
-fn solve_part_one(passports: &[&str]) {
+fn solve_part_one(passports: &[Passport]) {
     let mut valid_count = 0;
 
     for passport in passports {
-        let kvs = passport.split_whitespace().collect::<Vec<&str>>();
         let mut needed_keys = hashset! {
             "byr",
             "iyr",
@@ -37,8 +38,7 @@ fn solve_part_one(passports: &[&str]) {
             "pid",
         };
 
-        for kv in kvs {
-            let (key, _) = parse_kv(kv);
+        for (key, _) in passport {
             needed_keys.remove(key.as_str());
         }
 
@@ -51,7 +51,7 @@ fn solve_part_one(passports: &[&str]) {
     println!("Answer: {}", valid_count);
 }
 
-fn solve_part_two(passports: &[&str]) {
+fn solve_part_two(passports: &[Passport]) {
     type Checker = Box<dyn Fn(&str) -> bool>;
 
     fn is_valid_byr(val: &str) -> bool {
@@ -76,7 +76,6 @@ fn solve_part_two(passports: &[&str]) {
     let mut valid_count = 0;
 
     for passport in passports {
-        let kvs = passport.split_whitespace().collect::<Vec<&str>>();
         let mut needed_keys = hashset! {
             "byr",
             "iyr",
@@ -87,9 +86,7 @@ fn solve_part_two(passports: &[&str]) {
             "pid",
         };
 
-        for kv in kvs {
-            let (key, val) = parse_kv(kv);
-
+        for (key, val) in passport {
             let checker = match checkers.get(key.as_str()) {
                 Some(checker) => checker,
                 None => continue,
@@ -113,8 +110,13 @@ fn main() {
     let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
     let passports = contents
         .split("\n\n")
-        .map(|p| p.trim())
-        .collect::<Vec<&str>>();
+        .map(|t| {
+            t.trim()
+                .split_whitespace()
+                .map(|i| parse_kv(i))
+                .collect::<Passport>()
+        })
+        .collect::<Vec<Passport>>();
 
     solve_part_one(&passports);
     solve_part_two(&passports);
