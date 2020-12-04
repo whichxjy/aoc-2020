@@ -11,8 +11,7 @@ lazy_static! {
         r"(?x)
         ^(?P<key>[[:word:]]+)
         :
-        (?P<val>.+)$
-        "
+        (?P<val>.+)$"
     )
     .unwrap();
 }
@@ -108,8 +107,7 @@ fn solve_part_two(passports: &[Passport]) {
             static ref RE: Regex = Regex::new(
                 r"(?x)
                 ^(?P<number>\d+)
-                (?P<suffix>cm|in)$
-                "
+                (?P<suffix>cm|in)$"
             )
             .unwrap();
         }
