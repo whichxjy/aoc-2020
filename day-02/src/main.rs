@@ -20,8 +20,7 @@ fn parse_item_from_line(line: &str) -> Option<Item> {
             \s
             (?P<letter>[[:word:]])
             :\s
-            (?P<password>[[:word:]]+)$
-            "
+            (?P<password>[[:word:]]+)$"
         )
         .unwrap();
     }
