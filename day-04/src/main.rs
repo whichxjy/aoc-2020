@@ -17,11 +17,17 @@ lazy_static! {
     .unwrap();
 }
 
-fn parse_kv(text: &str) -> (String, String) {
-    let cap = KV_RE.captures(text).expect("Fail to parse kv");
-    let key = cap["key"].to_owned();
-    let val = cap["val"].to_owned();
-    (key, val)
+fn parse_passport(text: &str) -> Passport {
+    let mut passport = Passport::new();
+
+    for item in text.trim().split_whitespace() {
+        let cap = KV_RE.captures(item).expect("Fail to parse kv");
+        let key = cap["key"].to_owned();
+        let val = cap["val"].to_owned();
+        passport.push((key, val));
+    }
+
+    passport
 }
 
 fn solve_part_one(passports: &[Passport]) {
@@ -54,6 +60,7 @@ fn solve_part_one(passports: &[Passport]) {
 fn solve_part_two(passports: &[Passport]) {
     type Checker = Box<dyn Fn(&str) -> bool>;
 
+    // [byr]
     fn is_valid_byr(val: &str) -> bool {
         lazy_static! {
             static ref RE: Regex = Regex::new(r"^\d{4}$").unwrap();
@@ -63,13 +70,98 @@ fn solve_part_two(passports: &[Passport]) {
             return false;
         }
 
-        let byr = val.parse::<u32>().unwrap();
-        (byr >= 1920) && (byr <= 2002)
+        let number = val.parse::<u32>().unwrap();
+        (number >= 1920) && (number <= 2002)
+    }
+
+    // [iyr]
+    fn is_valid_iyr(val: &str) -> bool {
+        lazy_static! {
+            static ref RE: Regex = Regex::new(r"^\d{4}$").unwrap();
+        }
+
+        if !RE.is_match(val) {
+            return false;
+        }
+
+        let number = val.parse::<u32>().unwrap();
+        (number >= 2010) && (number <= 2020)
+    }
+
+    // [eyr]
+    fn is_valid_eyr(val: &str) -> bool {
+        lazy_static! {
+            static ref RE: Regex = Regex::new(r"^\d{4}$").unwrap();
+        }
+
+        if !RE.is_match(val) {
+            return false;
+        }
+
+        let number = val.parse::<u32>().unwrap();
+        (number >= 2020) && (number <= 2030)
+    }
+
+    // [hgt]
+    fn is_valid_hgt(val: &str) -> bool {
+        lazy_static! {
+            static ref RE: Regex = Regex::new(
+                r"(?x)
+                ^(?P<number>\d+)
+                (?P<suffix>cm|in)$
+                "
+            )
+            .unwrap();
+        }
+
+        let cap = match RE.captures(val) {
+            Some(cap) => cap,
+            None => return false,
+        };
+
+        let number = cap["number"].parse::<u32>().unwrap();
+        match &cap["suffix"] {
+            "cm" => (number >= 150) && (number <= 193),
+            _ => (number >= 59) && (number <= 76),
+        }
+    }
+
+    // [hcl]
+    fn is_valid_hcl(val: &str) -> bool {
+        lazy_static! {
+            static ref RE: Regex = Regex::new(r"^#([0-9a-f]{6})$").unwrap();
+        }
+
+        RE.is_match(val)
+    }
+
+    // [ecl]
+    fn is_valid_ecl(val: &str) -> bool {
+        lazy_static! {
+            static ref RE: Regex = Regex::new(r"^(amb|blu|brn|gry|grn|hzl|oth)$").unwrap();
+        }
+
+        RE.is_match(val)
+    }
+
+    // [pid]
+    fn is_valid_pid(val: &str) -> bool {
+        lazy_static! {
+            static ref RE: Regex = Regex::new(r"^([[:digit:]]{9})$").unwrap();
+        }
+
+        RE.is_match(val)
     }
 
     let checkers: HashMap<&str, Checker> = {
         hashmap! {
-            "byr" => Box::new(is_valid_byr) as Checker
+            "byr" => Box::new(is_valid_byr) as Checker,
+            "iyr" => Box::new(is_valid_iyr) as Checker,
+            "eyr" => Box::new(is_valid_eyr) as Checker,
+            "hgt" => Box::new(is_valid_hgt) as Checker,
+            "hcl" => Box::new(is_valid_hcl) as Checker,
+            "ecl" => Box::new(is_valid_ecl) as Checker,
+            "pid" => Box::new(is_valid_pid) as Checker,
         }
     };
 
@@ -110,12 +202,7 @@ fn main() {
     let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
     let passports = contents
         .split("\n\n")
-        .map(|t| {
-            t.trim()
-                .split_whitespace()
-                .map(|i| parse_kv(i))
-                .collect::<Passport>()
-        })
+        .map(parse_passport)
         .collect::<Vec<Passport>>();
 
     solve_part_one(&passports);
