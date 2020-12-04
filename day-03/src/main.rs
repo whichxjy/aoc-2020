@@ -15,16 +15,33 @@ fn count_tree(matrix: &Vec<Vec<Item>>, right: usize, down: usize) -> u32 {
     let mut curr_col = 0;
     let mut tree_count = 0;
 
-    for _ in 0..row_num {
+    while curr_row < row_num {
         if matrix[curr_row][curr_col] == Item::Tree {
             tree_count += 1;
         }
 
-        curr_row += right;
-        curr_col = (curr_col + down) % col_num;
+        curr_row += down;
+        curr_col = (curr_col + right) % col_num;
     }
 
     tree_count
+}
+
+fn solve_part_one(matrix: &Vec<Vec<Item>>) {
+    println!("[Part one]");
+    println!("Answer: {}", count_tree(&matrix, 1, 3));
+}
+
+fn solve_part_two(matrix: &Vec<Vec<Item>>) {
+    let result_a = count_tree(matrix, 1, 1);
+    let result_b = count_tree(matrix, 3, 1);
+    let result_c = count_tree(matrix, 5, 1);
+    let result_d = count_tree(matrix, 7, 1);
+    let result_e = count_tree(matrix, 1, 2);
+    let result = result_a * result_b * result_c * result_d * result_e;
+
+    println!("[Part two]");
+    println!("Answer: {}", result);
 }
 
 fn main() {
@@ -44,5 +61,6 @@ fn main() {
         }
     }
 
-    println!("Answer: {}", count_tree(&matrix, 1, 3));
+    solve_part_one(&matrix);
+    solve_part_two(&matrix);
 }
