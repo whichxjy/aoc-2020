@@ -7,6 +7,26 @@ enum Item {
     Tree,
 }
 
+fn count_tree(matrix: &Vec<Vec<Item>>, right: usize, down: usize) -> u32 {
+    let row_num = matrix.len();
+    let col_num = matrix[0].len();
+
+    let mut curr_row = 0;
+    let mut curr_col = 0;
+    let mut tree_count = 0;
+
+    for _ in 0..row_num {
+        if matrix[curr_row][curr_col] == Item::Tree {
+            tree_count += 1;
+        }
+
+        curr_row += right;
+        curr_col = (curr_col + down) % col_num;
+    }
+
+    tree_count
+}
+
 fn main() {
     let file = BufReader::new(File::open("input.txt").unwrap());
     let lines = file.lines().map(|l| l.unwrap()).collect::<Vec<String>>();
@@ -24,18 +44,5 @@ fn main() {
         }
     }
 
-    let mut curr_row = 0;
-    let mut curr_col = 0;
-    let mut tree_count = 0;
-
-    for _ in 0..row_num {
-        if matrix[curr_row][curr_col] == Item::Tree {
-            tree_count += 1;
-        }
-
-        curr_row += 1;
-        curr_col = (curr_col + 3) % col_num;
-    }
-
-    println!("Answer: {}", tree_count);
+    println!("Answer: {}", count_tree(&matrix, 1, 3));
 }
