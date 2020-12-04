@@ -7,7 +7,7 @@ enum Item {
     Tree,
 }
 
-fn count_tree(matrix: &Vec<Vec<Item>>, right: usize, down: usize) -> u32 {
+fn count_tree(matrix: &[Vec<Item>], right: usize, down: usize) -> u32 {
     let row_num = matrix.len();
     let col_num = matrix[0].len();
 
@@ -27,12 +27,12 @@ fn count_tree(matrix: &Vec<Vec<Item>>, right: usize, down: usize) -> u32 {
     tree_count
 }
 
-fn solve_part_one(matrix: &Vec<Vec<Item>>) {
+fn solve_part_one(matrix: &[Vec<Item>]) {
     println!("[Part one]");
     println!("Answer: {}", count_tree(&matrix, 1, 3));
 }
 
-fn solve_part_two(matrix: &Vec<Vec<Item>>) {
+fn solve_part_two(matrix: &[Vec<Item>]) {
     let result_a = count_tree(matrix, 1, 1);
     let result_b = count_tree(matrix, 3, 1);
     let result_c = count_tree(matrix, 5, 1);
