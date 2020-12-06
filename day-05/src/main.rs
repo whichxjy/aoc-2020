@@ -1,3 +1,5 @@
+use itertools::max;
+use std::collections::HashSet;
 use std::fs;
 
 enum Half {
@@ -42,25 +44,24 @@ fn determine_col(half_seq: &[Half]) -> u32 {
 
 fn determine_seat_id(line: &str) -> u32 {
     let half_seq = line.chars().map(determine_half).collect::<Vec<Half>>();
-
     let row = determine_row(&half_seq[0..7]);
     let col = determine_col(&half_seq[7..10]);
     row * 8 + col
 }
 
+fn solve_part_one(seat_ids: &HashSet<u32>) {
+    let highest_seat_id = max(seat_ids).unwrap();
+    println!("[Part one]");
+    println!("Answer: {}", highest_seat_id);
+}
+
 fn main() {
     let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
     let lines = contents.split_whitespace().collect::<Vec<&str>>();
+    let seat_ids = lines
+        .into_iter()
+        .map(determine_seat_id)
+        .collect::<HashSet<u32>>();
 
-    let mut highest_seat_id = 0;
-
-    for line in lines {
-        let seat_id = determine_seat_id(&line);
-
-        if seat_id > highest_seat_id {
-            highest_seat_id = seat_id;
-        }
-    }
-
-    println!("Answer: {}", highest_seat_id);
+    solve_part_one(&seat_ids);
 }
