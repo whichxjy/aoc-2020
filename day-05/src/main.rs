@@ -40,6 +40,14 @@ fn determine_col(half_seq: &[Half]) -> u32 {
     find_index(0, 7, half_seq)
 }
 
+fn determine_seat_id(line: &str) -> u32 {
+    let half_seq = line.chars().map(determine_half).collect::<Vec<Half>>();
+
+    let row = determine_row(&half_seq[0..7]);
+    let col = determine_col(&half_seq[7..10]);
+    row * 8 + col
+}
+
 fn main() {
     let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
     let lines = contents.split_whitespace().collect::<Vec<&str>>();
@@ -47,11 +55,7 @@ fn main() {
     let mut highest_seat_id = 0;
 
     for line in lines {
-        let half_seq = line.chars().map(determine_half).collect::<Vec<Half>>();
-
-        let row = determine_row(&half_seq[0..7]);
-        let col = determine_col(&half_seq[7..10]);
-        let seat_id = row * 8 + col;
+        let seat_id = determine_seat_id(&line);
 
         if seat_id > highest_seat_id {
             highest_seat_id = seat_id;
