@@ -50,7 +50,7 @@ fn determine_seat_id(line: &str) -> u32 {
 }
 
 fn solve_part_one(seat_ids: &HashSet<u32>) {
-    let max_seat_id = max(seat_ids).unwrap();
+    let max_seat_id = *max(seat_ids).unwrap();
     println!("[Part one]");
     println!("Answer: {}", max_seat_id);
 }
@@ -59,12 +59,13 @@ fn solve_part_two(seat_ids: &HashSet<u32>) {
     let max_seat_id = *max(seat_ids).unwrap();
     let min_seat_id = *min(seat_ids).unwrap();
 
-    let maybe_seat_ids = (min_seat_id..=max_seat_id)
-        .filter(|x| !seat_ids.contains(&x))
-        .collect::<Vec<u32>>();
+    let my_seat_id = (min_seat_id..=max_seat_id)
+        .filter(|x| !seat_ids.contains(x))
+        .next()
+        .unwrap();
 
     println!("[Part two]");
-    println!("Answer: {:#?}", maybe_seat_ids);
+    println!("Answer: {}", my_seat_id);
 }
 
 fn main() {
