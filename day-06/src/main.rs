@@ -1,11 +1,8 @@
 use std::collections::HashSet;
 use std::fs;
 
-fn main() {
-    let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
-    let groups = contents.split("\n\n").collect::<Vec<&str>>();
-
-    let mut yes_sum = 0;
+fn solve_part_one(groups: &[&str]) {
+    let mut sum = 0;
 
     for group in groups {
         let mut st = HashSet::new();
@@ -16,8 +13,16 @@ fn main() {
             }
         }
 
-        yes_sum += st.len();
+        sum += st.len();
     }
 
-    println!("Answer: {}", yes_sum);
+    println!("[Part one]");
+    println!("Answer: {}", sum);
+}
+
+fn main() {
+    let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
+    let groups = contents.split("\n\n").collect::<Vec<&str>>();
+
+    solve_part_one(&groups);
 }
