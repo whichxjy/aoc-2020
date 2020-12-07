@@ -4,7 +4,7 @@ use regex::Regex;
 use std::collections::HashMap;
 use std::fs;
 
-type Passport = Vec<(String, String)>;
+type Passport = HashMap<String, String>;
 
 lazy_static! {
     static ref KV_RE: Regex = Regex::new(
@@ -23,7 +23,7 @@ fn parse_passport(text: &str) -> Passport {
         let cap = KV_RE.captures(item).expect("Fail to parse kv");
         let key = cap["key"].to_owned();
         let val = cap["val"].to_owned();
-        passport.push((key, val));
+        passport.insert(key, val);
     }
 
     passport
@@ -43,7 +43,7 @@ fn solve_part_one(passports: &[Passport]) {
             "pid",
         };
 
-        for (key, _) in passport {
+        for key in passport.keys() {
             needed_keys.remove(key.as_str());
         }
 
