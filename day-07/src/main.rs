@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::fs;
 
 fn parse_item(item: &str) -> (String, u32) {
-    let item = item.trim_end_matches(" bags");
+    let item = item.trim_end_matches(" bag").trim_end_matches(" bags");
     let pieces = item.splitn(2, ' ').collect::<Vec<&str>>();
 
     let left_piece = pieces[0];
@@ -39,7 +39,33 @@ fn process_lines(lines: &[&str]) -> HashMap<String, std::vec::Vec<(String, u32)>
 }
 
 fn solve_part_one(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) {
-    println!("{:#?}", color_mp);
+    fn find_color(
+        color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>,
+        start_color: &str,
+        target_color: &str,
+    ) -> bool {
+        if start_color == target_color {
+            return true;
+        }
+
+        println!("{:#?}", start_color);
+        for (in_color, _) in color_mp.get(start_color).unwrap() {
+            if find_color(color_mp, in_color, target_color) {
+                return true;
+            }
+        }
+
+        false
+    }
+
+    let target_color = "shiny gold";
+    let count = color_mp
+        .keys()
+        .map(|key_color| find_color(color_mp, key_color, target_color))
+        .filter(|r| *r == true)
+        .count();
+
+    println!("{:#?}", count);
 }
 
 fn main() {
