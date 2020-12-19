@@ -74,17 +74,23 @@ fn solve_part_two(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) {
         color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>,
         start_color: &str,
     ) -> u32 {
-        color_mp
-            .get(start_color)
-            .unwrap()
-            .to_owned()
+        let items = color_mp.get(start_color).unwrap();
+
+        1 + items
             .iter()
             .map(|(in_color, count)| count * count_bags(color_mp, in_color))
-            .sum()
+            .sum::<u32>()
+    }
+
+    fn count_inner_bags(
+        color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>,
+        start_color: &str,
+    ) -> u32 {
+        count_bags(color_mp, start_color) - 1
     }
 
     let start_color = "shiny gold";
-    let count = count_bags(color_mp, start_color);
+    let count = count_inner_bags(color_mp, start_color);
 
     println!("[Part two]");
     println!("Answer: {}", count);
