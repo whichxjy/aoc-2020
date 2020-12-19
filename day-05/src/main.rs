@@ -49,26 +49,28 @@ fn determine_seat_id(line: &str) -> u32 {
     row * 8 + col
 }
 
-fn solve_part_one(seat_ids: &HashSet<u32>) {
-    let max_seat_id = *max(seat_ids).unwrap();
-
-    println!("[Part one]");
-    println!("Answer: {}", max_seat_id);
-    assert_eq!(max_seat_id, 913);
+fn solve_part_one(seat_ids: &HashSet<u32>) -> u32 {
+    *max(seat_ids).unwrap()
 }
 
-fn solve_part_two(seat_ids: &HashSet<u32>) {
+fn solve_part_two(seat_ids: &HashSet<u32>) -> u32 {
     let max_seat_id = *max(seat_ids).unwrap();
     let min_seat_id = *min(seat_ids).unwrap();
 
-    let my_seat_id = (min_seat_id..=max_seat_id)
+    (min_seat_id..=max_seat_id)
         .filter(|x| !seat_ids.contains(x))
         .next()
-        .unwrap();
+        .unwrap()
+}
 
-    println!("[Part two]");
-    println!("Answer: {}", my_seat_id);
-    assert_eq!(my_seat_id, 717);
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_day_5() {
+        main();
+    }
 }
 
 fn main() {
@@ -79,6 +81,6 @@ fn main() {
         .map(determine_seat_id)
         .collect::<HashSet<u32>>();
 
-    solve_part_one(&seat_ids);
-    solve_part_two(&seat_ids);
+    assert_eq!(solve_part_one(&seat_ids), 913);
+    assert_eq!(solve_part_two(&seat_ids), 717);
 }
