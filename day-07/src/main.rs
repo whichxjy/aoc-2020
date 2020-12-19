@@ -38,7 +38,7 @@ fn process_lines(lines: &[&str]) -> HashMap<String, std::vec::Vec<(String, u32)>
     color_mp
 }
 
-fn solve_part_one(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) {
+fn solve_part_one(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) -> u32 {
     fn find_color(
         color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>,
         start_color: &str,
@@ -58,19 +58,15 @@ fn solve_part_one(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) {
     }
 
     let target_color = "shiny gold";
-    let count = color_mp
+    color_mp
         .keys()
         .filter(|key_color| *key_color != target_color)
         .map(|key_color| find_color(color_mp, key_color, target_color))
         .filter(|r| *r == true)
-        .count();
-
-    println!("[Part one]");
-    println!("Answer: {}", count);
-    assert_eq!(count, 179);
+        .count() as u32
 }
 
-fn solve_part_two(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) {
+fn solve_part_two(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) -> u32 {
     fn count_bags(
         color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>,
         start_color: &str,
@@ -91,11 +87,17 @@ fn solve_part_two(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) {
     }
 
     let start_color = "shiny gold";
-    let count = count_inner_bags(color_mp, start_color);
+    count_inner_bags(color_mp, start_color)
+}
 
-    println!("[Part two]");
-    println!("Answer: {}", count);
-    assert_eq!(count, 18925);
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_day_7() {
+        main();
+    }
 }
 
 fn main() {
@@ -103,6 +105,7 @@ fn main() {
     let lines = contents.trim().split('\n').collect::<Vec<&str>>();
 
     let color_mp = process_lines(&lines);
-    solve_part_one(&color_mp);
-    solve_part_two(&color_mp);
+
+    assert_eq!(solve_part_one(&color_mp), 179);
+    assert_eq!(solve_part_two(&color_mp), 18925);
 }
