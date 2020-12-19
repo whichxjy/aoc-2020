@@ -1,18 +1,16 @@
 use std::collections::HashMap;
 use std::fs;
 
-fn solve_part_one(entries: &[u32], target: u32) {
+fn solve_part_one(entries: &[u32], target: u32) -> u32 {
     // (target - entry) -> entry
     let mut num_map = HashMap::new();
+
+    let mut result = 0;
 
     for entry in entries {
         match num_map.get(entry) {
             Some(match_entry) => {
-                println!("[Part one]");
-                println!("Two entries: ({}, {})", entry, match_entry);
-                let result = entry * match_entry;
-                println!("Answer: {}", result);
-                assert_eq!(result, 434);
+                result = entry * match_entry;
                 break;
             }
             None => {
@@ -20,11 +18,15 @@ fn solve_part_one(entries: &[u32], target: u32) {
             }
         }
     }
+
+    result
 }
 
-fn solve_part_two(entries: &[u32], target: u32) {
+fn solve_part_two(entries: &[u32], target: u32) -> u32 {
     let mut entries = entries.to_vec();
     entries.sort_unstable();
+
+    let mut result = 0;
 
     for i in 0..entries.len() {
         if i > 0 && entries[i] == entries[i - 1] {
@@ -50,14 +52,8 @@ fn solve_part_two(entries: &[u32], target: u32) {
                     right -= 1;
                 }
             } else {
-                println!("[Part two]");
-                println!(
-                    "Three entries: ({}, {}, {})",
-                    entries[i], entries[left], entries[right]
-                );
-                let result = entries[i] * entries[left] * entries[right];
-                println!("Answer: {}", result);
-                assert_eq!(result, 509);
+                result = entries[i] * entries[left] * entries[right];
+                break;
 
                 left += 1;
                 right -= 1;
@@ -71,16 +67,24 @@ fn solve_part_two(entries: &[u32], target: u32) {
             }
         }
     }
+
+    result
 }
 
-fn main() {
-    let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
-    let target = 2020;
-    let entries = contents
-        .split_whitespace()
-        .map(|e| e.parse::<u32>().unwrap())
-        .collect::<Vec<u32>>();
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    solve_part_one(&entries, target);
-    solve_part_two(&entries, target);
+    #[test]
+    fn test_day_1() {
+        let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
+        let target = 2020;
+        let entries = contents
+            .split_whitespace()
+            .map(|e| e.parse::<u32>().unwrap())
+            .collect::<Vec<u32>>();
+
+        assert_eq!(solve_part_one(&entries, target), 691771);
+        assert_eq!(solve_part_two(&entries, target), 232508760);
+    }
 }
