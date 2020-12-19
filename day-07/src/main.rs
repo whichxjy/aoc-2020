@@ -38,10 +38,14 @@ fn process_lines(lines: &[&str]) -> HashMap<String, std::vec::Vec<(String, u32)>
     color_mp
 }
 
+fn solve_part_one(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) {
+    println!("{:#?}", color_mp);
+}
+
 fn main() {
     let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
     let lines = contents.trim().split('\n').collect::<Vec<&str>>();
 
     let color_mp = process_lines(&lines);
-    println!("{:#?}", color_mp);
+    solve_part_one(&color_mp);
 }
