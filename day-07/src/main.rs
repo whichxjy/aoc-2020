@@ -67,6 +67,7 @@ fn solve_part_one(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) {
 
     println!("[Part one]");
     println!("Answer: {}", count);
+    assert_eq!(count, 179);
 }
 
 fn solve_part_two(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) {
@@ -94,6 +95,7 @@ fn solve_part_two(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) {
 
     println!("[Part two]");
     println!("Answer: {}", count);
+    assert_eq!(count, 18925);
 }
 
 fn main() {
