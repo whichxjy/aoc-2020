@@ -28,8 +28,11 @@ fn count_tree(matrix: &[Vec<Item>], right: usize, down: usize) -> u32 {
 }
 
 fn solve_part_one(matrix: &[Vec<Item>]) {
+    let count = count_tree(&matrix, 3, 1);
+
     println!("[Part one]");
-    println!("Answer: {}", count_tree(&matrix, 1, 3));
+    println!("Answer: {}", count);
+    assert_eq!(count, 286);
 }
 
 fn solve_part_two(matrix: &[Vec<Item>]) {
@@ -42,6 +45,7 @@ fn solve_part_two(matrix: &[Vec<Item>]) {
 
     println!("[Part two]");
     println!("Answer: {}", result);
+    assert_eq!(result, 3638606400);
 }
 
 fn main() {
