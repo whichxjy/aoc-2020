@@ -1,6 +1,9 @@
 use std::collections::HashMap;
 use std::fs;
 
+const ANSWER_ONE: u32 = 691771;
+const ANSWER_TWO: u32 = 232508760;
+
 fn solve_part_one(entries: &[u32], target: u32) -> u32 {
     // (target - entry) -> entry
     let mut num_map = HashMap::new();
@@ -84,7 +87,7 @@ mod tests {
             .map(|e| e.parse::<u32>().unwrap())
             .collect::<Vec<u32>>();
 
-        assert_eq!(solve_part_one(&entries, target), 691771);
-        assert_eq!(solve_part_two(&entries, target), 232508760);
+        assert_eq!(solve_part_one(&entries, target), ANSWER_ONE);
+        assert_eq!(solve_part_two(&entries, target), ANSWER_TWO);
     }
 }
