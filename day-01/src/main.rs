@@ -79,15 +79,7 @@ mod tests {
 
     #[test]
     fn test_day_1() {
-        let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
-        let target = 2020;
-        let entries = contents
-            .split_whitespace()
-            .map(|e| e.parse::<u32>().unwrap())
-            .collect::<Vec<u32>>();
-
-        assert_eq!(solve_part_one(&entries, target), ANSWER_ONE);
-        assert_eq!(solve_part_two(&entries, target), ANSWER_TWO);
+        main();
     }
 }
 
