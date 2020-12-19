@@ -54,6 +54,7 @@ fn solve_part_one(passports: &[Passport]) {
 
     println!("[Part one]");
     println!("Answer: {}", valid_count);
+    assert_eq!(valid_count, 264);
 }
 
 fn solve_part_two(passports: &[Passport]) {
@@ -194,6 +195,7 @@ fn solve_part_two(passports: &[Passport]) {
 
     println!("[Part two]");
     println!("Answer: {}", valid_count);
+    assert_eq!(valid_count, 224);
 }
 
 fn main() {
