@@ -43,29 +43,33 @@ fn parse_item_from_line(line: &str) -> Option<Item> {
     })
 }
 
-fn solve_part_one(items: &[Item]) {
+fn solve_part_one(items: &[Item]) -> u32 {
     fn is_valid(item: &Item) -> bool {
         let count = item.password.chars().filter(|c| c == &item.letter).count();
         (count >= item.lowest) && (count <= item.highest)
     }
 
-    let valid_count = items.iter().filter(|item| is_valid(item)).count();
-    println!("[Part one]");
-    println!("Answer: {}", valid_count);
-    assert_eq!(valid_count, 434);
+    items.iter().filter(|item| is_valid(item)).count() as u32
 }
 
-fn solve_part_two(items: &[Item]) {
+fn solve_part_two(items: &[Item]) -> u32 {
     fn is_valid(item: &Item) -> bool {
         let lowest_letter = item.password.chars().nth(item.lowest - 1).unwrap();
         let highest_letter = item.password.chars().nth(item.highest - 1).unwrap();
         (lowest_letter == item.letter) ^ (highest_letter == item.letter)
     }
 
-    let valid_count = items.iter().filter(|item| is_valid(item)).count();
-    println!("[Part two]");
-    println!("Answer: {}", valid_count);
-    assert_eq!(valid_count, 509);
+    items.iter().filter(|item| is_valid(item)).count() as u32
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_day_2() {
+        main();
+    }
 }
 
 fn main() {
@@ -76,6 +80,6 @@ fn main() {
         .map(|l| parse_item_from_line(&l).unwrap())
         .collect::<Vec<Item>>();
 
-    solve_part_one(&items);
-    solve_part_two(&items);
+    assert_eq!(solve_part_one(&items), 434);
+    assert_eq!(solve_part_two(&items), 509);
 }
