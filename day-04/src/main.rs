@@ -29,7 +29,7 @@ fn parse_passport(text: &str) -> Passport {
     passport
 }
 
-fn solve_part_one(passports: &[Passport]) {
+fn solve_part_one(passports: &[Passport]) -> u32 {
     let mut valid_count = 0;
 
     for passport in passports {
@@ -52,12 +52,10 @@ fn solve_part_one(passports: &[Passport]) {
         }
     }
 
-    println!("[Part one]");
-    println!("Answer: {}", valid_count);
-    assert_eq!(valid_count, 264);
+    valid_count
 }
 
-fn solve_part_two(passports: &[Passport]) {
+fn solve_part_two(passports: &[Passport]) -> u32 {
     type Checker = Box<dyn Fn(&str) -> bool>;
 
     // [byr]
@@ -193,9 +191,17 @@ fn solve_part_two(passports: &[Passport]) {
         }
     }
 
-    println!("[Part two]");
-    println!("Answer: {}", valid_count);
-    assert_eq!(valid_count, 224);
+    valid_count
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_day_4() {
+        main();
+    }
 }
 
 fn main() {
@@ -205,6 +211,6 @@ fn main() {
         .map(parse_passport)
         .collect::<Vec<Passport>>();
 
-    solve_part_one(&passports);
-    solve_part_two(&passports);
+    assert_eq!(solve_part_one(&passports), 264);
+    assert_eq!(solve_part_two(&passports), 224);
 }
