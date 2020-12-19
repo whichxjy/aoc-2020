@@ -1,56 +1,60 @@
 use std::collections::{HashMap, HashSet};
 use std::fs;
 
-fn solve_part_one(groups: &[&str]) {
-    let mut sum = 0;
+fn solve_part_one(groups: &[&str]) -> u32 {
+    groups
+        .iter()
+        .map(|group| {
+            let mut st = HashSet::new();
 
-    for group in groups {
-        let mut st = HashSet::new();
-
-        for person in group.split_whitespace() {
-            for ch in person.chars() {
-                st.insert(ch);
+            for person in group.split_whitespace() {
+                for ch in person.chars() {
+                    st.insert(ch);
+                }
             }
-        }
 
-        sum += st.len();
-    }
-
-    println!("[Part one]");
-    println!("Answer: {}", sum);
-    assert_eq!(sum, 6549);
+            st.len() as u32
+        })
+        .sum()
 }
 
-fn solve_part_two(groups: &[&str]) {
-    let mut sum = 0;
+fn solve_part_two(groups: &[&str]) -> u32 {
+    groups
+        .iter()
+        .map(|group| {
+            let mut hm = HashMap::new();
 
-    for group in groups {
-        let mut hm = HashMap::new();
+            let people = group.split_whitespace().collect::<Vec<&str>>();
 
-        let people = group.split_whitespace().collect::<Vec<&str>>();
-
-        for person in &people {
-            for ch in person.chars() {
-                let next_count: usize = match hm.get(&ch) {
-                    Some(count) => count + 1,
-                    None => 1,
-                };
-                hm.insert(ch, next_count);
+            for person in &people {
+                for ch in person.chars() {
+                    let next_count: usize = match hm.get(&ch) {
+                        Some(count) => count + 1,
+                        None => 1,
+                    };
+                    hm.insert(ch, next_count);
+                }
             }
-        }
 
-        sum += hm.values().filter(|&v| *v == people.len()).count();
+            hm.values().filter(|&v| *v == people.len()).count() as u32
+        })
+        .sum()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_day_6() {
+        main();
     }
-
-    println!("[Part two]");
-    println!("Answer: {}", sum);
-    assert_eq!(sum, 3466);
 }
 
 fn main() {
     let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
     let groups = contents.split("\n\n").collect::<Vec<&str>>();
 
-    solve_part_one(&groups);
-    solve_part_two(&groups);
+    assert_eq!(solve_part_one(&groups), 6549);
+    assert_eq!(solve_part_two(&groups), 3466);
 }
