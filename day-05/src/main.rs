@@ -51,8 +51,10 @@ fn determine_seat_id(line: &str) -> u32 {
 
 fn solve_part_one(seat_ids: &HashSet<u32>) {
     let max_seat_id = *max(seat_ids).unwrap();
+
     println!("[Part one]");
     println!("Answer: {}", max_seat_id);
+    assert_eq!(max_seat_id, 913);
 }
 
 fn solve_part_two(seat_ids: &HashSet<u32>) {
@@ -66,6 +68,7 @@ fn solve_part_two(seat_ids: &HashSet<u32>) {
 
     println!("[Part two]");
     println!("Answer: {}", my_seat_id);
+    assert_eq!(my_seat_id, 717);
 }
 
 fn main() {
