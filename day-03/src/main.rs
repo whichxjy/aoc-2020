@@ -27,25 +27,27 @@ fn count_tree(matrix: &[Vec<Item>], right: usize, down: usize) -> u32 {
     tree_count
 }
 
-fn solve_part_one(matrix: &[Vec<Item>]) {
-    let count = count_tree(&matrix, 3, 1);
-
-    println!("[Part one]");
-    println!("Answer: {}", count);
-    assert_eq!(count, 286);
+fn solve_part_one(matrix: &[Vec<Item>]) -> u32 {
+    count_tree(&matrix, 3, 1)
 }
 
-fn solve_part_two(matrix: &[Vec<Item>]) {
+fn solve_part_two(matrix: &[Vec<Item>]) -> u32 {
     let result_a = count_tree(matrix, 1, 1);
     let result_b = count_tree(matrix, 3, 1);
     let result_c = count_tree(matrix, 5, 1);
     let result_d = count_tree(matrix, 7, 1);
     let result_e = count_tree(matrix, 1, 2);
-    let result = result_a * result_b * result_c * result_d * result_e;
+    result_a * result_b * result_c * result_d * result_e
+}
 
-    println!("[Part two]");
-    println!("Answer: {}", result);
-    assert_eq!(result, 3638606400);
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_day_3() {
+        main();
+    }
 }
 
 fn main() {
@@ -65,6 +67,6 @@ fn main() {
         }
     }
 
-    solve_part_one(&matrix);
-    solve_part_two(&matrix);
+    assert_eq!(solve_part_one(&matrix), 286);
+    assert_eq!(solve_part_two(&matrix), 3638606400);
 }
