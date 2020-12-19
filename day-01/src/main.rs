@@ -56,7 +56,6 @@ fn solve_part_two(entries: &[u32], target: u32) -> u32 {
                 }
             } else {
                 result = entries[i] * entries[left] * entries[right];
-                break;
 
                 left += 1;
                 right -= 1;
@@ -90,4 +89,16 @@ mod tests {
         assert_eq!(solve_part_one(&entries, target), ANSWER_ONE);
         assert_eq!(solve_part_two(&entries, target), ANSWER_TWO);
     }
+}
+
+fn main() {
+    let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
+    let target = 2020;
+    let entries = contents
+        .split_whitespace()
+        .map(|e| e.parse::<u32>().unwrap())
+        .collect::<Vec<u32>>();
+
+    assert_eq!(solve_part_one(&entries, target), ANSWER_ONE);
+    assert_eq!(solve_part_two(&entries, target), ANSWER_TWO);
 }
