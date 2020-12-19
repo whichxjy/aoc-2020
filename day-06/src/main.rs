@@ -18,6 +18,7 @@ fn solve_part_one(groups: &[&str]) {
 
     println!("[Part one]");
     println!("Answer: {}", sum);
+    assert_eq!(sum, 6549);
 }
 
 fn solve_part_two(groups: &[&str]) {
@@ -43,6 +44,7 @@ fn solve_part_two(groups: &[&str]) {
 
     println!("[Part two]");
     println!("Answer: {}", sum);
+    assert_eq!(sum, 3466);
 }
 
 fn main() {
