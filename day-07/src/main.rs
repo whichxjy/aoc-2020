@@ -48,7 +48,6 @@ fn solve_part_one(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) {
             return true;
         }
 
-        println!("{:#?}", start_color);
         for (in_color, _) in color_mp.get(start_color).unwrap() {
             if find_color(color_mp, in_color, target_color) {
                 return true;
@@ -61,11 +60,13 @@ fn solve_part_one(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) {
     let target_color = "shiny gold";
     let count = color_mp
         .keys()
+        .filter(|key_color| *key_color != target_color)
         .map(|key_color| find_color(color_mp, key_color, target_color))
         .filter(|r| *r == true)
         .count();
 
-    println!("{:#?}", count);
+    println!("[Part one]");
+    println!("Answer: {}", count);
 }
 
 fn main() {
