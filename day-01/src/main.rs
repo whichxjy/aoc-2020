@@ -10,7 +10,9 @@ fn solve_part_one(entries: &[u32], target: u32) {
             Some(match_entry) => {
                 println!("[Part one]");
                 println!("Two entries: ({}, {})", entry, match_entry);
-                println!("Answer: {}", entry * match_entry);
+                let result = entry * match_entry;
+                println!("Answer: {}", result);
+                assert_eq!(result, 434);
                 break;
             }
             None => {
@@ -53,7 +55,9 @@ fn solve_part_two(entries: &[u32], target: u32) {
                     "Three entries: ({}, {}, {})",
                     entries[i], entries[left], entries[right]
                 );
-                println!("Answer: {}", entries[i] * entries[left] * entries[right]);
+                let result = entries[i] * entries[left] * entries[right];
+                println!("Answer: {}", result);
+                assert_eq!(result, 509);
 
                 left += 1;
                 right -= 1;
