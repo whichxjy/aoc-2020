@@ -69,10 +69,32 @@ fn solve_part_one(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) {
     println!("Answer: {}", count);
 }
 
+fn solve_part_two(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) {
+    fn count_bags(
+        color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>,
+        start_color: &str,
+    ) -> u32 {
+        color_mp
+            .get(start_color)
+            .unwrap()
+            .to_owned()
+            .iter()
+            .map(|(in_color, count)| count * count_bags(color_mp, in_color))
+            .sum()
+    }
+
+    let start_color = "shiny gold";
+    let count = count_bags(color_mp, start_color);
+
+    println!("[Part two]");
+    println!("Answer: {}", count);
+}
+
 fn main() {
     let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
     let lines = contents.trim().split('\n').collect::<Vec<&str>>();
 
     let color_mp = process_lines(&lines);
     solve_part_one(&color_mp);
+    solve_part_two(&color_mp);
 }
