@@ -52,6 +52,7 @@ fn solve_part_one(items: &[Item]) {
     let valid_count = items.iter().filter(|item| is_valid(item)).count();
     println!("[Part one]");
     println!("Answer: {}", valid_count);
+    assert_eq!(valid_count, 434);
 }
 
 fn solve_part_two(items: &[Item]) {
@@ -64,6 +65,7 @@ fn solve_part_two(items: &[Item]) {
     let valid_count = items.iter().filter(|item| is_valid(item)).count();
     println!("[Part two]");
     println!("Answer: {}", valid_count);
+    assert_eq!(valid_count, 509);
 }
 
 fn main() {
