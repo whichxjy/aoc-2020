@@ -1,3 +1,4 @@
+use std::cmp::Ordering;
 use std::collections::HashMap;
 use std::fs;
 
@@ -39,29 +40,33 @@ fn solve_part_two(entries: &[u32], target: u32) -> u32 {
         while left < right {
             let three_sum = entries[i] + entries[left] + entries[right];
 
-            if three_sum < target {
-                left += 1;
-
-                while left < right && entries[left] == entries[left - 1] {
+            match three_sum.cmp(&target) {
+                Ordering::Less => {
                     left += 1;
-                }
-            } else if three_sum > target {
-                right -= 1;
 
-                while left < right && entries[right] == entries[right + 1] {
+                    while left < right && entries[left] == entries[left - 1] {
+                        left += 1;
+                    }
+                }
+                Ordering::Greater => {
                     right -= 1;
+
+                    while left < right && entries[right] == entries[right + 1] {
+                        right -= 1;
+                    }
                 }
-            } else {
-                result = entries[i] * entries[left] * entries[right];
+                Ordering::Equal => {
+                    result = entries[i] * entries[left] * entries[right];
 
-                left += 1;
-                right -= 1;
-
-                while left < right && entries[left] == entries[left - 1] {
                     left += 1;
-                }
-                while left < right && entries[right] == entries[right + 1] {
                     right -= 1;
+
+                    while left < right && entries[left] == entries[left - 1] {
+                        left += 1;
+                    }
+                    while left < right && entries[right] == entries[right + 1] {
+                        right -= 1;
+                    }
                 }
             }
         }
