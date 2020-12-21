@@ -62,7 +62,7 @@ fn solve_part_one(color_mp: &HashMap<String, std::vec::Vec<(String, u32)>>) -> u
         .keys()
         .filter(|key_color| *key_color != target_color)
         .map(|key_color| find_color(color_mp, key_color, target_color))
-        .filter(|r| *r == true)
+        .filter(|r| *r)
         .count() as u32
 }
 
