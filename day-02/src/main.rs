@@ -74,7 +74,7 @@ mod tests {
 
 fn main() {
     let file = BufReader::new(File::open("input.txt").unwrap());
-    let lines = file.lines().map(|l| l.unwrap()).collect::<Vec<String>>();
+    let lines = file.lines().map(|l| l.unwrap());
     let items = lines
         .into_iter()
         .map(|l| parse_item_from_line(&l).unwrap())
