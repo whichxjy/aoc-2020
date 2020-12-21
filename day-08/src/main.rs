@@ -11,6 +11,7 @@ enum Opr {
 // Instruction
 #[derive(Debug)]
 struct Inst {
+    idx: usize,
     opr: Opr,
     arg: i32,
 }
@@ -18,7 +19,8 @@ struct Inst {
 fn parse_insts(lines: &[&str]) -> Vec<Inst> {
     lines
         .iter()
-        .map(|line| {
+        .enumerate()
+        .map(|(idx, line)| {
             let pieces = line.splitn(2, ' ').collect::<Vec<&str>>();
 
             let left_piece = pieces[0];
@@ -33,12 +35,15 @@ fn parse_insts(lines: &[&str]) -> Vec<Inst> {
 
             let arg = right_piece.parse::<i32>().unwrap();
 
-            Inst { opr, arg }
+            Inst { idx, opr, arg }
         })
         .collect::<Vec<Inst>>()
 }
 
 fn solve_part_one(insts: &[Inst]) -> u32 {
+    for inst in insts {
+        println!("{:?}", inst);
+    }
     0
 }
 
