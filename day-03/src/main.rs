@@ -1,6 +1,3 @@
-use std::fs::File;
-use std::io::{BufRead, BufReader};
-
 #[derive(Clone, PartialEq)]
 enum Item {
     Open,
@@ -51,8 +48,8 @@ mod tests {
 }
 
 fn main() {
-    let file = BufReader::new(File::open("input.txt").unwrap());
-    let lines = file.lines().map(|l| l.unwrap()).collect::<Vec<String>>();
+    let content = include_str!("../input.txt");
+    let lines = content.trim().split('\n').collect::<Vec<&str>>();
 
     let row_num = lines.len();
     let col_num = lines[0].len();
