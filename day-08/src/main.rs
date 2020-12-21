@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::fs;
 
 // Operation
@@ -40,11 +41,30 @@ fn parse_insts(lines: &[&str]) -> Vec<Inst> {
         .collect::<Vec<Inst>>()
 }
 
-fn solve_part_one(insts: &[Inst]) -> u32 {
-    for inst in insts {
-        println!("{:?}", inst);
+fn solve_part_one(insts: &[Inst]) -> i32 {
+    let mut accumulator = 0;
+    let mut curr_inst = &insts[0];
+
+    let mut executed_inst_idxes = HashSet::new();
+
+    while !executed_inst_idxes.contains(&curr_inst.idx) {
+        executed_inst_idxes.insert(curr_inst.idx);
+
+        // Execute current inst.
+        let next_inst_idx = match curr_inst.opr {
+            Opr::Acc => {
+                accumulator += curr_inst.arg;
+                curr_inst.idx + 1
+            }
+            Opr::Jmp => ((curr_inst.idx as i32) + curr_inst.arg) as usize,
+            Opr::Nop => curr_inst.idx + 1,
+        };
+
+        // Set next inst.
+        curr_inst = &insts[next_inst_idx];
     }
-    0
+
+    accumulator
 }
 
 #[cfg(test)]
@@ -60,7 +80,7 @@ mod tests {
 fn main() {
     let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
     let lines = contents.trim().split('\n').collect::<Vec<&str>>();
-
     let insts = parse_insts(&lines);
-    solve_part_one(&insts);
+
+    assert_eq!(solve_part_one(&insts), 1563);
 }
