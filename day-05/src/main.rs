@@ -1,6 +1,5 @@
 use itertools::{max, min};
 use std::collections::HashSet;
-use std::fs;
 
 enum Half {
     LowerHalf,
@@ -73,8 +72,8 @@ mod tests {
 }
 
 fn main() {
-    let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
-    let lines = contents.split_whitespace();
+    let content = include_str!("../input.txt");
+    let lines = content.split_whitespace();
     let seat_ids = lines
         .into_iter()
         .map(determine_seat_id)
