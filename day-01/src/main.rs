@@ -1,6 +1,5 @@
 use std::cmp::Ordering;
 use std::collections::HashMap;
-use std::fs;
 
 fn solve_part_one(entries: &[u32], target: u32) -> u32 {
     // (target - entry) -> entry
@@ -86,12 +85,13 @@ mod tests {
 }
 
 fn main() {
-    let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
-    let target = 2020;
-    let entries = contents
+    let content = include_str!("../input.txt");
+    let entries = content
         .split_whitespace()
         .map(|e| e.parse::<u32>().unwrap())
         .collect::<Vec<u32>>();
+
+    let target = 2020;
 
     assert_eq!(solve_part_one(&entries, target), 691771);
     assert_eq!(solve_part_two(&entries, target), 232508760);
