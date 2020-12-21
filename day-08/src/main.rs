@@ -38,13 +38,24 @@ fn parse_insts(lines: &[&str]) -> Vec<Inst> {
         .collect::<Vec<Inst>>()
 }
 
+fn solve_part_one(insts: &[Inst]) -> u32 {
+    0
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_day_8() {
+        main();
+    }
+}
+
 fn main() {
     let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
     let lines = contents.trim().split('\n').collect::<Vec<&str>>();
 
     let insts = parse_insts(&lines);
-
-    for inst in insts {
-        println!("{:?}", inst);
-    }
+    solve_part_one(&insts);
 }
