@@ -58,8 +58,7 @@ fn solve_part_two(seat_ids: &HashSet<u32>) -> u32 {
     let min_seat_id = *min(seat_ids).unwrap();
 
     (min_seat_id..=max_seat_id)
-        .filter(|x| !seat_ids.contains(x))
-        .next()
+        .find(|x| !seat_ids.contains(x))
         .unwrap()
 }
 
@@ -75,7 +74,7 @@ mod tests {
 
 fn main() {
     let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
-    let lines = contents.split_whitespace().collect::<Vec<&str>>();
+    let lines = contents.split_whitespace();
     let seat_ids = lines
         .into_iter()
         .map(determine_seat_id)
