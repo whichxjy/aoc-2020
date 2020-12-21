@@ -26,6 +26,33 @@ fn solve_part_one(nums: &[u64]) -> u64 {
     nums[invalid_idx]
 }
 
+fn solve_part_two(nums: &[u64]) -> u64 {
+    let target = solve_part_one(&nums);
+
+    // Get prefix sum of nums.
+    // i == 0: prefix_sum[i] = 0
+    // i >= 1: prefix_sum[i] = nums[0] + ... + nums[i - 1]
+    let mut prefix_sum = vec![0; nums.len() + 1];
+    prefix_sum[0] = nums[0];
+    for i in 1..prefix_sum.len() {
+        prefix_sum[i] = nums[i - 1] + prefix_sum[i - 1];
+    }
+
+    for left in 0..nums.len() {
+        for right in left..nums.len() {
+            let range_sum = prefix_sum[right + 1] - prefix_sum[left];
+
+            if range_sum == target {
+                let max_num = nums[left..=right].iter().max().unwrap();
+                let min_num = nums[left..=right].iter().min().unwrap();
+                return max_num + min_num;
+            }
+        }
+    }
+
+    0
+}
+
 fn main() {
     let content = include_str!("../input.txt");
     let nums = content
@@ -35,4 +62,5 @@ fn main() {
         .collect::<Vec<u64>>();
 
     assert_eq!(solve_part_one(&nums), 373803594);
+    assert_eq!(solve_part_two(&nums), 51152360);
 }
