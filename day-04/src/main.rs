@@ -2,7 +2,6 @@ use lazy_static::lazy_static;
 use maplit::{hashmap, hashset};
 use regex::Regex;
 use std::collections::HashMap;
-use std::fs;
 
 type Passport = HashMap<String, String>;
 
@@ -205,8 +204,8 @@ mod tests {
 }
 
 fn main() {
-    let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
-    let passports = contents
+    let content = include_str!("../input.txt");
+    let passports = content
         .split("\n\n")
         .map(parse_passport)
         .collect::<Vec<Passport>>();
