@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::fs;
 
 fn parse_item(item: &str) -> (String, u32) {
     let item = item.trim_end_matches(" bag").trim_end_matches(" bags");
@@ -101,8 +100,8 @@ mod tests {
 }
 
 fn main() {
-    let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
-    let lines = contents.trim().split('\n').collect::<Vec<&str>>();
+    let content = include_str!("../input.txt");
+    let lines = content.trim().split('\n').collect::<Vec<&str>>();
 
     let color_mp = process_lines(&lines);
 
