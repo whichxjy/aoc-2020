@@ -1,5 +1,4 @@
 use std::collections::HashSet;
-use std::fs;
 
 // Operation
 #[derive(Debug, Clone, PartialEq)]
@@ -136,8 +135,8 @@ mod tests {
 }
 
 fn main() {
-    let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
-    let lines = contents.trim().split('\n').collect::<Vec<&str>>();
+    let content = include_str!("../input.txt");
+    let lines = content.trim().split('\n').collect::<Vec<&str>>();
     let insts = parse_insts(&lines);
 
     assert_eq!(solve_part_one(&insts), 1563);
