@@ -1,7 +1,5 @@
 use lazy_static::lazy_static;
 use regex::Regex;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
 
 struct Item {
     lowest: usize,
@@ -73,8 +71,8 @@ mod tests {
 }
 
 fn main() {
-    let file = BufReader::new(File::open("input.txt").unwrap());
-    let lines = file.lines().map(|l| l.unwrap());
+    let content = include_str!("../input.txt");
+    let lines = content.trim().split('\n');
     let items = lines
         .into_iter()
         .map(|l| parse_item_from_line(&l).unwrap())
