@@ -1,5 +1,4 @@
 use std::collections::{HashMap, HashSet};
-use std::fs;
 
 fn solve_part_one(groups: &[&str]) -> u32 {
     groups
@@ -52,8 +51,8 @@ mod tests {
 }
 
 fn main() {
-    let contents = fs::read_to_string("input.txt").expect("Fail to read input file");
-    let groups = contents.split("\n\n").collect::<Vec<&str>>();
+    let content = include_str!("../input.txt");
+    let groups = content.split("\n\n").collect::<Vec<&str>>();
 
     assert_eq!(solve_part_one(&groups), 6549);
     assert_eq!(solve_part_two(&groups), 3466);
