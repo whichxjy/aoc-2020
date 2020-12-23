@@ -58,8 +58,7 @@ fn solve_part_two(nums: &[u32]) -> u64 {
 fn main() {
     let content = include_str!("../input.txt");
     let nums = content
-        .trim()
-        .split('\n')
+        .lines()
         .map(|l| l.parse::<u32>().unwrap())
         .collect::<Vec<u32>>();
 
