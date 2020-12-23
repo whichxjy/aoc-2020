@@ -49,7 +49,7 @@ mod tests {
 
 fn main() {
     let content = include_str!("../input.txt");
-    let lines = content.trim().split('\n').collect::<Vec<&str>>();
+    let lines = content.lines().collect::<Vec<&str>>();
 
     let row_num = lines.len();
     let col_num = lines[0].len();
