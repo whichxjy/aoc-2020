@@ -72,8 +72,8 @@ mod tests {
 
 fn main() {
     let content = include_str!("../input.txt");
-    let lines = content.trim().split('\n');
-    let items = lines
+    let items = content
+        .lines()
         .into_iter()
         .map(|l| parse_item_from_line(&l).unwrap())
         .collect::<Vec<Item>>();
