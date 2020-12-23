@@ -38,59 +38,59 @@ fn parse_layout(lines: &[&str]) -> Layout {
     }
 }
 
-fn get_seat_adjs(layout: &Layout, row: usize, col: usize) -> Vec<(usize, usize)> {
-    let offsets: Vec<(i32, i32)> = vec![
-        (-1, -1),
-        (-1, 0),
-        (-1, 1),
-        (0, -1),
-        (0, 1),
-        (1, -1),
-        (1, 0),
-        (1, 1),
-    ];
+fn solve_part_one(layout: &Layout) -> usize {
+    fn get_seat_adjs(layout: &Layout, row: usize, col: usize) -> Vec<(usize, usize)> {
+        let offsets: Vec<(i32, i32)> = vec![
+            (-1, -1),
+            (-1, 0),
+            (-1, 1),
+            (0, -1),
+            (0, 1),
+            (1, -1),
+            (1, 0),
+            (1, 1),
+        ];
 
-    offsets
-        .iter()
-        .map(|(row_offset, col_offset)| (row as i32 + row_offset, col as i32 + col_offset))
-        .filter(|(next_row, next_col)| {
-            *next_row >= 0
-                && *next_col >= 0
-                && *next_row < layout.row_num as i32
-                && *next_col < layout.col_num as i32
-        })
-        .map(|(next_row, next_col)| (next_row as usize, next_col as usize))
-        .collect()
-}
-
-fn map_seat(layout: &Layout, row: usize, col: usize) -> SeatKind {
-    match layout.seat_map[row][col] {
-        SeatKind::Floor => SeatKind::Floor,
-        SeatKind::Empty => match get_seat_adjs(layout, row, col)
+        offsets
             .iter()
-            .map(|(next_row, next_col)| layout.seat_map[*next_row][*next_col].clone())
-            .all(|seat_kind| seat_kind != SeatKind::Occupied)
-        {
-            true => SeatKind::Occupied,
-            false => SeatKind::Empty,
-        },
-        SeatKind::Occupied => {
-            let occupied_adjs_count = get_seat_adjs(layout, row, col)
+            .map(|(row_offset, col_offset)| (row as i32 + row_offset, col as i32 + col_offset))
+            .filter(|(next_row, next_col)| {
+                *next_row >= 0
+                    && *next_col >= 0
+                    && *next_row < layout.row_num as i32
+                    && *next_col < layout.col_num as i32
+            })
+            .map(|(next_row, next_col)| (next_row as usize, next_col as usize))
+            .collect()
+    }
+
+    fn map_seat(layout: &Layout, row: usize, col: usize) -> SeatKind {
+        match layout.seat_map[row][col] {
+            SeatKind::Floor => SeatKind::Floor,
+            SeatKind::Empty => match get_seat_adjs(layout, row, col)
                 .iter()
                 .map(|(next_row, next_col)| layout.seat_map[*next_row][*next_col].clone())
-                .filter(|seat_kind| *seat_kind == SeatKind::Occupied)
-                .count();
+                .all(|seat_kind| seat_kind != SeatKind::Occupied)
+            {
+                true => SeatKind::Occupied,
+                false => SeatKind::Empty,
+            },
+            SeatKind::Occupied => {
+                let occupied_adjs_count = get_seat_adjs(layout, row, col)
+                    .iter()
+                    .map(|(next_row, next_col)| layout.seat_map[*next_row][*next_col].clone())
+                    .filter(|seat_kind| *seat_kind == SeatKind::Occupied)
+                    .count();
 
-            if occupied_adjs_count >= 4 {
-                SeatKind::Empty
-            } else {
-                SeatKind::Occupied
+                if occupied_adjs_count >= 4 {
+                    SeatKind::Empty
+                } else {
+                    SeatKind::Occupied
+                }
             }
         }
     }
-}
 
-fn solve_part_one(layout: &Layout) -> usize {
     let mut layout = layout.to_owned();
 
     loop {
@@ -126,7 +126,7 @@ fn solve_part_one(layout: &Layout) -> usize {
 
 fn main() {
     let content = include_str!("../input.txt");
-    let lines = content.trim().split('\n').collect::<Vec<&str>>();
+    let lines = content.lines().collect::<Vec<&str>>();
     let layout = parse_layout(&lines);
 
     assert_eq!(solve_part_one(&layout), 2324);
