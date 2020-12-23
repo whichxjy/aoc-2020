@@ -136,7 +136,7 @@ mod tests {
 
 fn main() {
     let content = include_str!("../input.txt");
-    let lines = content.trim().split('\n').collect::<Vec<&str>>();
+    let lines = content.lines().collect::<Vec<&str>>();
     let insts = parse_insts(&lines);
 
     assert_eq!(solve_part_one(&insts), 1563);
