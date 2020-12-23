@@ -101,7 +101,7 @@ mod tests {
 
 fn main() {
     let content = include_str!("../input.txt");
-    let lines = content.trim().split('\n').collect::<Vec<&str>>();
+    let lines = content.lines().collect::<Vec<&str>>();
 
     let color_mp = process_lines(&lines);
 
