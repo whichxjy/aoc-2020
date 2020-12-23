@@ -87,7 +87,7 @@ mod tests {
 fn main() {
     let content = include_str!("../input.txt");
     let entries = content
-        .split_whitespace()
+        .lines()
         .map(|e| e.parse::<u32>().unwrap())
         .collect::<Vec<u32>>();
 
