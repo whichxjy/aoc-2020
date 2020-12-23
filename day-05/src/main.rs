@@ -73,9 +73,8 @@ mod tests {
 
 fn main() {
     let content = include_str!("../input.txt");
-    let lines = content.split_whitespace();
-    let seat_ids = lines
-        .into_iter()
+    let seat_ids = content
+        .lines()
         .map(determine_seat_id)
         .collect::<HashSet<u32>>();
 
